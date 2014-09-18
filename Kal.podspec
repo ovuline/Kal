@@ -3,7 +3,7 @@ Pod::Spec.new do |s|
   s.version      = '1.0.0'
   s.summary      = 'Calendar'
   s.author = {
-    'Rory O'Connor' => 'rory@ovuline.com'
+    'Rory O\'Connor' => 'rory@ovuline.com'
   }
   s.source = {
     :git => 'https://github.com/ovuline /Kal.git',
