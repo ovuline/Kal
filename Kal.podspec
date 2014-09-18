@@ -9,5 +9,5 @@ Pod::Spec.new do |s|
     :git => 'https://github.com/ovuline /Kal.git',
     :tag => '1.0.0'
   }
-  s.source_files = 'Source/*.{h,m}'
+  s.source_files = 'src/*.{h,m}'
 end
