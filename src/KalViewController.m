@@ -31,8 +31,8 @@ void mach_absolute_difference(uint64_t end, uint64_t start, struct timespec *tp)
 NSString *const KalDataSourceChangedNotification = @"KalDataSourceChangedNotification";
 
 @interface KalViewController ()
-@property (nonatomic, retain, readwrite) NSDate *initialDate;
-@property (nonatomic, retain, readwrite) NSDate *selectedDate;
+@property (nonatomic, strong, readwrite) NSDate *initialDate;
+@property (nonatomic, strong, readwrite) NSDate *selectedDate;
 - (KalView*)calendarView;
 @end
 
@@ -146,7 +146,7 @@ NSString *const KalDataSourceChangedNotification = @"KalDataSourceChangedNotific
 - (void)loadedDataSource:(id<KalDataSource>)theDataSource;
 {
   NSArray *markedDates = [theDataSource markedDatesFrom:logic.fromDate to:logic.toDate];
-  NSMutableArray *dates = [[markedDates mutableCopy] autorelease];
+  NSMutableArray *dates = [markedDates mutableCopy];
   for (int i=0; i<[dates count]; i++)
     [dates replaceObjectAtIndex:i withObject:[KalDate dateFromNSDate:[dates objectAtIndex:i]]];
   
@@ -203,13 +203,12 @@ NSString *const KalDataSourceChangedNotification = @"KalDataSourceChangedNotific
     self.title = @"Calendar";
 	CGRect frame = [[UIScreen mainScreen] applicationFrame];
 	frame.size.width = 252;
-  KalView *kalView = [[[KalView alloc] initWithFrame:frame delegate:self logic:logic] autorelease];
+  KalView *kalView = [[KalView alloc] initWithFrame:frame delegate:self logic:logic];
   self.view = kalView;
   tableView = kalView.tableView;
   tableView.dataSource = dataSource;
   tableView.delegate = delegate;
   tableView.showsVerticalScrollIndicator = NO;
-  [tableView retain];
   [kalView selectDate:[KalDate dateFromNSDate:self.initialDate]];
   [self reloadData];
 }
@@ -217,7 +216,6 @@ NSString *const KalDataSourceChangedNotification = @"KalDataSourceChangedNotific
 - (void)viewDidUnload
 {
   [super viewDidUnload];
-  [tableView release];
   tableView = nil;
 }
 
@@ -239,11 +237,6 @@ NSString *const KalDataSourceChangedNotification = @"KalDataSourceChangedNotific
 {
   [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationSignificantTimeChangeNotification object:nil];
   [[NSNotificationCenter defaultCenter] removeObserver:self name:KalDataSourceChangedNotification object:nil];
-  [initialDate release];
-  [selectedDate release];
-  [logic release];
-  [tableView release];
-  [super dealloc];
 }
 
 @end

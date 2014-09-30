@@ -26,17 +26,17 @@ static const CGFloat kMonthLabelHeight = 17.f;
 {
   if ((self = [super initWithFrame:frame])) {
     delegate = theDelegate;
-    logic = [theLogic retain];
+    logic = theLogic;
     [logic addObserver:self forKeyPath:@"selectedMonthNameAndYear" options:NSKeyValueObservingOptionNew context:NULL];
     self.autoresizesSubviews = YES;
     self.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     
-    UIView *headerView = [[[UIView alloc] initWithFrame:CGRectMake(0.f, 0.f, frame.size.width, kHeaderHeight)] autorelease];
+    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0.f, 0.f, frame.size.width, kHeaderHeight)];
     headerView.backgroundColor = [UIColor grayColor];
     [self addSubviewsToHeaderView:headerView];
     [self addSubview:headerView];
     
-    UIView *contentView = [[[UIView alloc] initWithFrame:CGRectMake(0.f, kHeaderHeight, frame.size.width, frame.size.height - kHeaderHeight)] autorelease];
+    UIView *contentView = [[UIView alloc] initWithFrame:CGRectMake(0.f, kHeaderHeight, frame.size.width, frame.size.height - kHeaderHeight)];
     contentView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     [self addSubviewsToContentView:contentView];
     [self addSubview:contentView];
@@ -81,7 +81,6 @@ static const CGFloat kMonthLabelHeight = 17.f;
   imageFrame.origin = CGPointZero;
   backgroundView.frame = imageFrame;
   [headerView addSubview:backgroundView];
-  [backgroundView release];
   
   // Create the previous month button on the left side of the view
   CGRect previousMonthButtonFrame = CGRectMake(self.left,
@@ -95,7 +94,6 @@ static const CGFloat kMonthLabelHeight = 17.f;
   previousMonthButton.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
   [previousMonthButton addTarget:self action:@selector(showPreviousMonth) forControlEvents:UIControlEventTouchUpInside];
   [headerView addSubview:previousMonthButton];
-  [previousMonthButton release];
   
   // Draw the selected month name centered and at the top of the view
   CGRect monthLabelFrame = CGRectMake((self.width/2.0f) - (kMonthLabelWidth/2.0f),
@@ -125,7 +123,6 @@ static const CGFloat kMonthLabelHeight = 17.f;
   nextMonthButton.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
   [nextMonthButton addTarget:self action:@selector(showFollowingMonth) forControlEvents:UIControlEventTouchUpInside];
   [headerView addSubview:nextMonthButton];
-  [nextMonthButton release];
   
   // Add column labels for each weekday (adjusting based on the current locale's first weekday)
 }
@@ -207,14 +204,8 @@ static const CGFloat kMonthLabelHeight = 17.f;
 - (void)dealloc
 {
   [logic removeObserver:self forKeyPath:@"selectedMonthNameAndYear"];
-  [logic release];
   
-  [headerTitleLabel release];
   [gridView removeObserver:self forKeyPath:@"frame"];
-  [gridView release];
-  [tableView release];
-  [shadowView release];
-  [super dealloc];
 }
 
 @end

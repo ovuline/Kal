@@ -22,8 +22,8 @@ const CGSize kTileSize = { 36.f, 34.f };
 static NSString *kSlideAnimationId = @"KalSwitchMonths";
 
 @interface KalGridView ()
-@property (nonatomic, retain) KalTileView *selectedTile;
-@property (nonatomic, retain) KalTileView *highlightedTile;
+@property (nonatomic, strong) KalTileView *selectedTile;
+@property (nonatomic, strong) KalTileView *highlightedTile;
 - (void)swapMonthViews;
 @end
 
@@ -46,7 +46,7 @@ static NSString *kSlideAnimationId = @"KalSwitchMonths";
   if (self = [super initWithFrame:frame]) {
     self.clipsToBounds = YES;
 	
-    logic = [theLogic retain];
+    logic = theLogic;
     delegate = theDelegate;
     
     CGRect monthRect = CGRectMake(1.f, 0.f, frame.size.width-2, frame.size.height);
@@ -90,7 +90,7 @@ static NSString *kSlideAnimationId = @"KalSwitchMonths";
 {
   if (highlightedTile != tile) {
     highlightedTile.highlighted = NO;
-    highlightedTile = [tile retain];
+    highlightedTile = tile;
     tile.highlighted = YES;
     [tile setNeedsDisplay];
   }
@@ -104,7 +104,7 @@ static NSString *kSlideAnimationId = @"KalSwitchMonths";
     
   if (selectedTile != tile) {
     selectedTile.selected = NO;
-    selectedTile = [tile retain];
+    selectedTile = tile;
     tile.selected = YES;
     [delegate didSelectDate:tile.date];
   }
@@ -117,7 +117,7 @@ static NSString *kSlideAnimationId = @"KalSwitchMonths";
 {
 //    if (selectedTile != tile) {
         selectedTile.selected = NO;
-        selectedTile = [tile retain];
+        selectedTile = tile;
 //        tile.selected = YES;
         [delegate didSelectDate:nil];
 //    }
@@ -273,14 +273,5 @@ static NSString *kSlideAnimationId = @"KalSwitchMonths";
 
 #pragma mark -
 
-- (void)dealloc
-{
-  [selectedTile release];
-  [highlightedTile release];
-  [frontMonthView release];
-  [backMonthView release];
-  [logic release];
-  [super dealloc];
-}
 
 @end
