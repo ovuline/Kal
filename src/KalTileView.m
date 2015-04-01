@@ -29,43 +29,12 @@ extern const CGSize kTileSize;
 
 - (void)drawRect:(CGRect)rect
 {
-  CGContextRef ctx = UIGraphicsGetCurrentContext();
-//  CGFloat fontSize = 24.f;
-	  CGFloat fontSize = 18.f;
-  UIFont *font = [UIFont systemFontOfSize:fontSize];
-  UIColor *shadowColor = nil;
-  UIColor *textColor = nil;
-//  UIImage *markerImage = nil;
-  CGContextSelectFont(ctx, [font.fontName cStringUsingEncoding:NSUTF8StringEncoding], fontSize, kCGEncodingMacRoman);
-      
-  CGContextTranslateCTM(ctx, 0, kTileSize.height);
-  CGContextScaleCTM(ctx, 1, -1);
-  
-//  if ([self isToday] && self.selected) {
-//    [[[UIImage imageNamed:@"Kal.bundle/kal_tile_today_selected.png"] stretchableImageWithLeftCapWidth:6 topCapHeight:0] drawInRect:CGRectMake(0, -1, kTileSize.width+1, kTileSize.height+1)];
-//    textColor = [UIColor whiteColor];
-//    shadowColor = [UIColor blackColor];
-//    markerImage = [UIImage imageNamed:@"Kal.bundle/kal_marker_today.png"];
-//  } else if ([self isToday] && !self.selected) {
-//    [[[UIImage imageNamed:@"Kal.bundle/kal_tile_today.png"] stretchableImageWithLeftCapWidth:6 topCapHeight:0] drawInRect:CGRectMake(0, -1, kTileSize.width+1, kTileSize.height+1)];
-//    textColor = [UIColor whiteColor];
-//    shadowColor = [UIColor blackColor];
-//    markerImage = [UIImage imageNamed:@"Kal.bundle/kal_marker_today.png"];
-//  } else if (self.selected) {
-//    [[[UIImage imageNamed:@"Kal.bundle/kal_tile_selected.png"] stretchableImageWithLeftCapWidth:1 topCapHeight:0] drawInRect:CGRectMake(0, -1, kTileSize.width+1, kTileSize.height+1)];
-//    textColor = [UIColor whiteColor];
-//    shadowColor = [UIColor blackColor];
-//    markerImage = [UIImage imageNamed:@"Kal.bundle/kal_marker_selected.png"];
-//  } else if (self.belongsToAdjacentMonth) {
-//    textColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Kal.bundle/kal_tile_dim_text_fill.png"]];
-//    shadowColor = nil;
-//    markerImage = [UIImage imageNamed:@"Kal.bundle/kal_marker_dim.png"];
-//  } else {
-//	  NSLog(@"Should be white color");
-//    textColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Kal.bundle/kal_tile_text_fill.png"]];
-//    shadowColor = [UIColor whiteColor];
-//    markerImage = [UIImage imageNamed:@"cal-period.png"];
-//  }
+    CGContextRef ctx = UIGraphicsGetCurrentContext();
+
+    CGFloat fontSize = 18.f;
+    UIFont *font = [UIFont systemFontOfSize:fontSize];
+    UIColor *shadowColor = nil;
+    UIColor *textColor = nil;
 	
 	if (self.belongsToAdjacentMonth) {
 		textColor = [UIColor grayColor];
@@ -77,7 +46,6 @@ extern const CGSize kTileSize;
 		}
 		
 		if ([self isToday] ) {
-//			[[[UIImage imageNamed:@"Kal.bundle/kal_tile_selected.png"] stretchableImageWithLeftCapWidth:2 topCapHeight:0] drawInRect:CGRectMake(-2, -1, kTileSize.width+3, kTileSize.height+2)];
 			textColor = [UIColor blackColor];
 		}
 		else {
@@ -85,32 +53,30 @@ extern const CGSize kTileSize;
 		}
 	}
 	
-  if (flags.marked)
+    if (flags.marked)
     {
         [[[UIImage imageNamed:@"Kal.bundle/kal_tile_selected.png"] stretchableImageWithLeftCapWidth:2 topCapHeight:0] drawInRect:CGRectMake(-2, -2, kTileSize.width+3, kTileSize.height+3)];
     }
-  NSUInteger n = [self.date day];
-  NSString *dayText = [NSString stringWithFormat:@"%lu", (unsigned long)n];
-  const char *day = [dayText cStringUsingEncoding:NSUTF8StringEncoding];
-  CGSize textSize = [dayText sizeWithFont:font];
-  CGFloat textX, textY;
-  textX = roundf(0.5f * (kTileSize.width - textSize.width));
-  textY = 6.f + roundf(0.5f * (kTileSize.height - textSize.height));
-//	if (self.selected) {
-//		textX++;
-//	}
-  if (shadowColor) {
-    [shadowColor setFill];
-    CGContextShowTextAtPoint(ctx, textX, textY, day, n >= 10 ? 2 : 1);
-    textY += 1.f;
-  }
-  [textColor setFill];
-  CGContextShowTextAtPoint(ctx, textX, textY, day, n >= 10 ? 2 : 1);
+    NSUInteger n = [self.date day];
+    NSString *dayText = [NSString stringWithFormat:@"%lu", (unsigned long)n];
+    const char *day = [dayText cStringUsingEncoding:NSUTF8StringEncoding];
+    CGSize textSize = [dayText sizeWithAttributes:@{NSFontAttributeName: font}];
+
+    CGFloat textX, textY;
+    textX = roundf(0.5f * (kTileSize.width - textSize.width));
+    textY = roundf(0.5f * (kTileSize.height - textSize.height));
+
+    if (shadowColor) {
+        [shadowColor setFill];
+        textY += 1.f;
+    }
   
-//  if (self.highlighted) {
-//    [[UIColor colorWithWhite:0.25f alpha:0.3f] setFill];
-//    CGContextFillRect(ctx, CGRectMake(0.f, 0.f, kTileSize.width, kTileSize.height));
-//  }
+    NSDictionary *attributes = @{NSFontAttributeName:[UIFont fontWithName:font.fontName
+                                                                     size:fontSize],
+                                 NSForegroundColorAttributeName:textColor
+                                 };
+    NSString *text = [NSString stringWithUTF8String:day];
+    [text drawAtPoint:CGPointMake(textX, textY) withAttributes:attributes];
 }
 
 - (void)resetState
