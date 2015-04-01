@@ -14,7 +14,8 @@
 - (void)setHeaderTitleText:(NSString *)text;
 @end
 
-static const CGFloat kHeaderHeight = 44.f;
+//static const CGFloat kHeaderHeight = 44.f;
+static const CGFloat kHeaderHeight = 33.f;
 static const CGFloat kMonthLabelHeight = 17.f;
 
 @implementation KalView
@@ -25,17 +26,17 @@ static const CGFloat kMonthLabelHeight = 17.f;
 {
   if ((self = [super initWithFrame:frame])) {
     delegate = theDelegate;
-    logic = [theLogic retain];
+    logic = theLogic;
     [logic addObserver:self forKeyPath:@"selectedMonthNameAndYear" options:NSKeyValueObservingOptionNew context:NULL];
     self.autoresizesSubviews = YES;
     self.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     
-    UIView *headerView = [[[UIView alloc] initWithFrame:CGRectMake(0.f, 0.f, frame.size.width, kHeaderHeight)] autorelease];
+    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0.f, 0.f, frame.size.width, kHeaderHeight)];
     headerView.backgroundColor = [UIColor grayColor];
     [self addSubviewsToHeaderView:headerView];
     [self addSubview:headerView];
     
-    UIView *contentView = [[[UIView alloc] initWithFrame:CGRectMake(0.f, kHeaderHeight, frame.size.width, frame.size.height - kHeaderHeight)] autorelease];
+    UIView *contentView = [[UIView alloc] initWithFrame:CGRectMake(0.f, kHeaderHeight, frame.size.width, frame.size.height - kHeaderHeight)];
     contentView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     [self addSubviewsToContentView:contentView];
     [self addSubview:contentView];
@@ -69,18 +70,17 @@ static const CGFloat kMonthLabelHeight = 17.f;
 
 - (void)addSubviewsToHeaderView:(UIView *)headerView
 {
-  const CGFloat kChangeMonthButtonWidth = 46.0f;
+  const CGFloat kChangeMonthButtonWidth = 36.0f;
   const CGFloat kChangeMonthButtonHeight = 30.0f;
   const CGFloat kMonthLabelWidth = 200.0f;
   const CGFloat kHeaderVerticalAdjust = 3.f;
   
   // Header background gradient
-  UIImageView *backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Kal.bundle/kal_grid_background.png"]];
+  UIImageView *backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Kal.bundle/kal_header_background.png"]];
   CGRect imageFrame = headerView.frame;
   imageFrame.origin = CGPointZero;
   backgroundView.frame = imageFrame;
   [headerView addSubview:backgroundView];
-  [backgroundView release];
   
   // Create the previous month button on the left side of the view
   CGRect previousMonthButtonFrame = CGRectMake(self.left,
@@ -94,19 +94,19 @@ static const CGFloat kMonthLabelHeight = 17.f;
   previousMonthButton.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
   [previousMonthButton addTarget:self action:@selector(showPreviousMonth) forControlEvents:UIControlEventTouchUpInside];
   [headerView addSubview:previousMonthButton];
-  [previousMonthButton release];
   
   // Draw the selected month name centered and at the top of the view
   CGRect monthLabelFrame = CGRectMake((self.width/2.0f) - (kMonthLabelWidth/2.0f),
-                                      kHeaderVerticalAdjust,
+                                      kHeaderVerticalAdjust+2,
                                       kMonthLabelWidth,
                                       kMonthLabelHeight);
   headerTitleLabel = [[UILabel alloc] initWithFrame:monthLabelFrame];
   headerTitleLabel.backgroundColor = [UIColor clearColor];
-  headerTitleLabel.font = [UIFont boldSystemFontOfSize:22.f];
-  headerTitleLabel.textAlignment = UITextAlignmentCenter;
-  headerTitleLabel.textColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Kal.bundle/kal_header_text_fill.png"]];
-  headerTitleLabel.shadowColor = [UIColor whiteColor];
+  headerTitleLabel.font = [UIFont boldSystemFontOfSize:16.f];
+  headerTitleLabel.textAlignment = NSTextAlignmentCenter;
+//  headerTitleLabel.textColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Kal.bundle/kal_header_text_fill.png"]];
+	headerTitleLabel.textColor = [UIColor whiteColor];
+  headerTitleLabel.shadowColor = [UIColor colorWithRed:175.0f/255.0f green:0.0f/255.0f blue:87.0f/255.0f alpha:1.0f];
   headerTitleLabel.shadowOffset = CGSizeMake(0.f, 1.f);
   [self setHeaderTitleText:[logic selectedMonthNameAndYear]];
   [headerView addSubview:headerTitleLabel];
@@ -123,27 +123,8 @@ static const CGFloat kMonthLabelHeight = 17.f;
   nextMonthButton.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
   [nextMonthButton addTarget:self action:@selector(showFollowingMonth) forControlEvents:UIControlEventTouchUpInside];
   [headerView addSubview:nextMonthButton];
-  [nextMonthButton release];
   
   // Add column labels for each weekday (adjusting based on the current locale's first weekday)
-  NSArray *weekdayNames = [[[[NSDateFormatter alloc] init] autorelease] shortWeekdaySymbols];
-  NSArray *fullWeekdayNames = [[[[NSDateFormatter alloc] init] autorelease] standaloneWeekdaySymbols];
-  NSUInteger firstWeekday = [[NSCalendar currentCalendar] firstWeekday];
-  NSUInteger i = firstWeekday - 1;
-  for (CGFloat xOffset = 0.f; xOffset < headerView.width; xOffset += 46.f, i = (i+1)%7) {
-    CGRect weekdayFrame = CGRectMake(xOffset, 30.f, 46.f, kHeaderHeight - 29.f);
-    UILabel *weekdayLabel = [[UILabel alloc] initWithFrame:weekdayFrame];
-    weekdayLabel.backgroundColor = [UIColor clearColor];
-    weekdayLabel.font = [UIFont boldSystemFontOfSize:10.f];
-    weekdayLabel.textAlignment = UITextAlignmentCenter;
-    weekdayLabel.textColor = [UIColor colorWithRed:0.3f green:0.3f blue:0.3f alpha:1.f];
-    weekdayLabel.shadowColor = [UIColor whiteColor];
-    weekdayLabel.shadowOffset = CGSizeMake(0.f, 1.f);
-    weekdayLabel.text = [weekdayNames objectAtIndex:i];
-    [weekdayLabel setAccessibilityLabel:[fullWeekdayNames objectAtIndex:i]];
-    [headerView addSubview:weekdayLabel];
-    [weekdayLabel release];
-  }
 }
 
 - (void)addSubviewsToContentView:(UIView *)contentView
@@ -161,13 +142,14 @@ static const CGFloat kMonthLabelHeight = 17.f;
   // The list of events for the selected day
   tableView = [[UITableView alloc] initWithFrame:fullWidthAutomaticLayoutFrame style:UITableViewStylePlain];
   tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+	tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
   [contentView addSubview:tableView];
   
   // Drop shadow below tile grid and over the list of events for the selected day
-  shadowView = [[UIImageView alloc] initWithFrame:fullWidthAutomaticLayoutFrame];
-  shadowView.image = [UIImage imageNamed:@"Kal.bundle/kal_grid_shadow.png"];
-  shadowView.height = shadowView.image.size.height;
-  [contentView addSubview:shadowView];
+//  shadowView = [[UIImageView alloc] initWithFrame:fullWidthAutomaticLayoutFrame];
+//  shadowView.image = [UIImage imageNamed:@"Kal.bundle/kal_grid_shadow.png"];
+//  shadowView.height = shadowView.image.size.height;
+//  [contentView addSubview:shadowView];
   
   // Trigger the initial KVO update to finish the contentView layout
   [gridView sizeToFit];
@@ -222,14 +204,8 @@ static const CGFloat kMonthLabelHeight = 17.f;
 - (void)dealloc
 {
   [logic removeObserver:self forKeyPath:@"selectedMonthNameAndYear"];
-  [logic release];
   
-  [headerTitleLabel release];
   [gridView removeObserver:self forKeyPath:@"frame"];
-  [gridView release];
-  [tableView release];
-  [shadowView release];
-  [super dealloc];
 }
 
 @end
