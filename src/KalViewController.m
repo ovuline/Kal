@@ -38,7 +38,7 @@ NSString *const KalDataSourceChangedNotification = @"KalDataSourceChangedNotific
 
 @implementation KalViewController
 
-@synthesize dataSource, delegate, initialDate, selectedDate;
+@synthesize initialDate, selectedDate;
 
 - (id)initWithSelectedDate:(NSDate *)date
 {
@@ -61,29 +61,29 @@ NSString *const KalDataSourceChangedNotification = @"KalDataSourceChangedNotific
 
 - (void)setDataSource:(id<KalDataSource>)aDataSource
 {
-  if (dataSource != aDataSource) {
-    dataSource = aDataSource;
-    tableView.dataSource = dataSource;
+  if (self.dataSource != aDataSource) {
+    _dataSource = aDataSource;
+    tableView.dataSource = self.dataSource;
   }
 }
 
 - (void)setDelegate:(id<UITableViewDelegate>)aDelegate
 {
-  if (delegate != aDelegate) {
-    delegate = aDelegate;
-    tableView.delegate = delegate;
+  if (self.delegate != aDelegate) {
+    _delegate = aDelegate;
+    tableView.delegate = self.delegate;
   }
 }
 
 - (void)clearTable
 {
-  [dataSource removeAllItems];
+  [self.dataSource removeAllItems];
   [tableView reloadData];
 }
 
 - (void)reloadData
 {
-  [dataSource presentingDatesFrom:logic.fromDate to:logic.toDate delegate:self];
+  [self.dataSource presentingDatesFrom:logic.fromDate to:logic.toDate delegate:self];
 }
 
 - (void)significantTimeChangeOccurred
@@ -111,7 +111,7 @@ NSString *const KalDataSourceChangedNotification = @"KalDataSourceChangedNotific
   NSDate *from = [[date NSDate] cc_dateByMovingToBeginningOfDay];
   NSDate *to = [[date NSDate] cc_dateByMovingToEndOfDay];
   [self clearTable];
-  [dataSource loadItemsFromDate:from toDate:to];
+  [self.dataSource loadItemsFromDate:from toDate:to];
   [tableView reloadData];
   [tableView flashScrollIndicators];
 
@@ -206,8 +206,8 @@ NSString *const KalDataSourceChangedNotification = @"KalDataSourceChangedNotific
   KalView *kalView = [[KalView alloc] initWithFrame:frame delegate:self logic:logic];
   self.view = kalView;
   tableView = kalView.tableView;
-  tableView.dataSource = dataSource;
-  tableView.delegate = delegate;
+  tableView.dataSource = self.dataSource;
+  tableView.delegate = self.delegate;
   tableView.showsVerticalScrollIndicator = NO;
   [kalView selectDate:[KalDate dateFromNSDate:self.initialDate]];
   [self reloadData];
