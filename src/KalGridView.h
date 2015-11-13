@@ -20,7 +20,6 @@
  */
 @interface KalGridView : UIView
 {
-  id<KalViewDelegate> delegate;  // Assigned.
   KalLogic *logic;
   KalMonthView *frontMonthView;
   KalMonthView *backMonthView;
@@ -31,6 +30,8 @@
 
 @property (nonatomic, readonly) BOOL transitioning;
 @property (unsafe_unretained, nonatomic, readonly) KalDate *selectedDate;
+
+@property (weak, nonatomic) id<KalViewDelegate> delegate;
 
 - (id)initWithFrame:(CGRect)frame logic:(KalLogic *)logic delegate:(id<KalViewDelegate>)delegate;
 - (void)selectDate:(KalDate *)date;
