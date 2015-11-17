@@ -47,7 +47,7 @@ static NSString *kSlideAnimationId = @"KalSwitchMonths";
     self.clipsToBounds = YES;
 	
     logic = theLogic;
-    delegate = theDelegate;
+    _delegate = theDelegate;
     
     CGRect monthRect = CGRectMake(1.f, 0.f, frame.size.width-2, frame.size.height);
     frontMonthView = [[KalMonthView alloc] initWithFrame:monthRect];
@@ -106,10 +106,10 @@ static NSString *kSlideAnimationId = @"KalSwitchMonths";
     selectedTile.selected = NO;
     selectedTile = tile;
     tile.selected = YES;
-    [delegate didSelectDate:tile.date];
+    [self.delegate didSelectDate:tile.date];
   }
   else {
-      [delegate didSelectDate:tile.date];
+      [self.delegate didSelectDate:tile.date];
   }
 }
 
@@ -119,7 +119,7 @@ static NSString *kSlideAnimationId = @"KalSwitchMonths";
         selectedTile.selected = NO;
         selectedTile = tile;
 //        tile.selected = YES;
-        [delegate didSelectDate:nil];
+        [self.delegate didSelectDate:nil];
 //    }
 }
 
@@ -163,9 +163,9 @@ static NSString *kSlideAnimationId = @"KalSwitchMonths";
     KalTileView *tile = (KalTileView*)hitView;
     if (tile.belongsToAdjacentMonth) {
       if ([tile.date compare:[KalDate dateFromNSDate:logic.baseDate]] == NSOrderedDescending) {
-        [delegate showFollowingMonth];
+        [self.delegate showFollowingMonth];
       } else {
-        [delegate showPreviousMonth];
+        [self.delegate showPreviousMonth];
       }
       self.selectedTile = [frontMonthView tileForDate:tile.date];
     } else {
