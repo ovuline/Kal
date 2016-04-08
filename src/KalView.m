@@ -76,7 +76,10 @@ static const CGFloat kMonthLabelHeight = 17.f;
   const CGFloat kHeaderVerticalAdjust = 3.f;
   
   // Header background gradient
-  UIImageView *backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Kal.bundle/kal_header_background.png"]];
+  UIImage *backgroundImage = [UIImage imageNamed:@"Kal.bundle/kal_header_background.png"
+                                        inBundle:[NSBundle bundleForClass:[self class]]
+                   compatibleWithTraitCollection:nil];
+  UIImageView *backgroundView = [[UIImageView alloc] initWithImage:backgroundImage];
   CGRect imageFrame = headerView.frame;
   imageFrame.origin = CGPointZero;
   backgroundView.frame = imageFrame;
@@ -87,9 +90,12 @@ static const CGFloat kMonthLabelHeight = 17.f;
                                                kHeaderVerticalAdjust,
                                                kChangeMonthButtonWidth,
                                                kChangeMonthButtonHeight);
+  UIImage *previousMonthImage = [UIImage imageNamed:@"Kal.bundle/kal_left_arrow.png"
+                                           inBundle:[NSBundle bundleForClass:[self class]]
+                      compatibleWithTraitCollection:nil];
   UIButton *previousMonthButton = [[UIButton alloc] initWithFrame:previousMonthButtonFrame];
   [previousMonthButton setAccessibilityLabel:NSLocalizedString(@"Previous month", nil)];
-  [previousMonthButton setImage:[UIImage imageNamed:@"Kal.bundle/kal_left_arrow.png"] forState:UIControlStateNormal];
+  [previousMonthButton setImage:previousMonthImage forState:UIControlStateNormal];
   previousMonthButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
   previousMonthButton.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
   [previousMonthButton addTarget:self action:@selector(showPreviousMonth) forControlEvents:UIControlEventTouchUpInside];
@@ -116,9 +122,12 @@ static const CGFloat kMonthLabelHeight = 17.f;
                                            kHeaderVerticalAdjust,
                                            kChangeMonthButtonWidth,
                                            kChangeMonthButtonHeight);
+  UIImage *nextMonthImage = [UIImage imageNamed:@"Kal.bundle/kal_right_arrow.png"
+                                       inBundle:[NSBundle bundleForClass:[self class]]
+                  compatibleWithTraitCollection:nil];
   UIButton *nextMonthButton = [[UIButton alloc] initWithFrame:nextMonthButtonFrame];
   [nextMonthButton setAccessibilityLabel:NSLocalizedString(@"Next month", nil)];
-  [nextMonthButton setImage:[UIImage imageNamed:@"Kal.bundle/kal_right_arrow.png"] forState:UIControlStateNormal];
+  [nextMonthButton setImage:nextMonthImage forState:UIControlStateNormal];
   nextMonthButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
   nextMonthButton.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
   [nextMonthButton addTarget:self action:@selector(showFollowingMonth) forControlEvents:UIControlEventTouchUpInside];

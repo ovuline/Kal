@@ -58,7 +58,10 @@ extern const CGSize kTileSize;
 - (void)drawRect:(CGRect)rect
 {
   CGContextRef ctx = UIGraphicsGetCurrentContext();
-  CGContextDrawTiledImage(ctx, (CGRect){CGPointZero,kTileSize}, [[UIImage imageNamed:@"Kal.bundle/kal_tile.png"] CGImage]);
+  UIImage *image = [UIImage imageNamed:@"Kal.bundle/kal_tile.png"
+                              inBundle:[NSBundle bundleForClass:[self class]]
+         compatibleWithTraitCollection:nil];
+  CGContextDrawTiledImage(ctx, (CGRect){CGPointZero,kTileSize}, [image CGImage]);
 	
 }
 

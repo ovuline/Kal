@@ -55,7 +55,10 @@ extern const CGSize kTileSize;
 	
     if (flags.marked)
     {
-        [[[UIImage imageNamed:@"Kal.bundle/kal_tile_selected.png"] stretchableImageWithLeftCapWidth:2 topCapHeight:0] drawInRect:CGRectMake(-2, -2, kTileSize.width+3, kTileSize.height+3)];
+        UIImage *image = [UIImage imageNamed:@"Kal.bundle/kal_tile_selected.png"
+                                    inBundle:[NSBundle bundleForClass:[self class]]
+               compatibleWithTraitCollection:nil];
+        [[image stretchableImageWithLeftCapWidth:2 topCapHeight:0] drawInRect:CGRectMake(-2, -2, kTileSize.width+3, kTileSize.height+3)];
     }
     NSUInteger n = [self.date day];
     NSString *dayText = [NSString stringWithFormat:@"%lu", (unsigned long)n];

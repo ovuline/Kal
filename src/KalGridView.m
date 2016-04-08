@@ -63,7 +63,10 @@ static NSString *kSlideAnimationId = @"KalSwitchMonths";
 
 - (void)drawRect:(CGRect)rect
 {
-	[[UIImage imageNamed:@"Kal.bundle/kal_grid_background.png"] drawInRect:rect];
+    UIImage *image = [UIImage imageNamed:@"Kal.bundle/kal_grid_background.png"
+                                inBundle:[NSBundle bundleForClass:[self class]]
+           compatibleWithTraitCollection:nil];
+    [image drawInRect:rect];
 	[[UIColor colorWithRed:0.63f green:0.65f blue:0.68f alpha:1.f] setFill];
 	CGRect line;
 	line.origin = CGPointMake(1.f, self.height - 1.f);
