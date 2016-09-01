@@ -8,6 +8,7 @@
 #import "KalDataSource.h"
 #import "KalDate.h"
 #import "KalPrivate.h"
+#import "KalView.h"       // for the KalViewDelegate protocol
 
 #define PROFILER 0
 #if PROFILER
@@ -30,7 +31,7 @@ void mach_absolute_difference(uint64_t end, uint64_t start, struct timespec *tp)
 
 NSString *const KalDataSourceChangedNotification = @"KalDataSourceChangedNotification";
 
-@interface KalViewController ()
+@interface KalViewController () <KalViewDelegate, KalDataSourceCallbacks>
 @property (nonatomic, strong, readwrite) NSDate *initialDate;
 @property (nonatomic, strong, readwrite) NSDate *selectedDate;
 - (KalView*)calendarView;
