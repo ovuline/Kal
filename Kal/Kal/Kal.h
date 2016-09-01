@@ -28,7 +28,7 @@
  *    KalViewController *calendar = [[[KalViewController alloc] initWithDataSource:source] autorelease];
  *    [self.navigationController pushViewController:calendar animated:YES];
  *
- *  Note that "MyKalDataSource" will tell the system which days to mark with a 
+ *  Note that "MyKalDataSource" will tell the system which days to mark with a
  *  dot and will provide the UITableViewCells that display the details for
  *  the currently selected date.
  *
@@ -41,3 +41,13 @@
 // whenever its content has changed. Kal uses this notification to
 // keep the UI in sync with the data source.
 extern NSString *const KalDataSourceChangedNotification;
+
+//! Project version number for Kal.
+FOUNDATION_EXPORT double KalVersionNumber;
+
+//! Project version string for Kal.
+FOUNDATION_EXPORT const unsigned char KalVersionString[];
+
+// In this header, you should import all the public headers of your framework using statements like #import <Kal/PublicHeader.h>
+
+
