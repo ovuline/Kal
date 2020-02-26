@@ -19,7 +19,7 @@
 		DDAEB0AE1D78413A0076D17C /* NSDateAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 533B287311E2D46E00B3CC07 /* NSDateAdditions.m */; };
 		DDAEB0AF1D78413A0076D17C /* UIViewAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 533B287511E2D46E00B3CC07 /* UIViewAdditions.m */; };
 		DDAEB0B01D7841680076D17C /* KalDataSource.h in Headers */ = {isa = PBXBuildFile; fileRef = 533B286111E2D46E00B3CC07 /* KalDataSource.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		DDAEB0B11D78416B0076D17C /* KalDate.h in Headers */ = {isa = PBXBuildFile; fileRef = 533B286311E2D46E00B3CC07 /* KalDate.h */; };
+		DDAEB0B11D78416B0076D17C /* KalDate.h in Headers */ = {isa = PBXBuildFile; fileRef = 533B286311E2D46E00B3CC07 /* KalDate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DDAEB0B21D78416F0076D17C /* KalGridView.h in Headers */ = {isa = PBXBuildFile; fileRef = 533B286511E2D46E00B3CC07 /* KalGridView.h */; };
 		DDAEB0B31D7841710076D17C /* KalLogic.h in Headers */ = {isa = PBXBuildFile; fileRef = 533B286711E2D46E00B3CC07 /* KalLogic.h */; };
 		DDAEB0B41D7841730076D17C /* KalMonthView.h in Headers */ = {isa = PBXBuildFile; fileRef = 533B286911E2D46E00B3CC07 /* KalMonthView.h */; };
